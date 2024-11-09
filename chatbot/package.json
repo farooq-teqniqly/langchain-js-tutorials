@@ -1,0 +1,22 @@
+{
+  "name": "chatbot",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/farooq-teqniqly/langchain-js-tutorials.git"
+  },
+  "private": true,
+  "dependencies": {
+    "@langchain/core": "^0.3.17",
+    "@langchain/openai": "^0.3.12",
+    "dotenv": "^16.4.5",
+    "langchain": "^0.3.5",
+    "yargs": "^17.7.2"
+  }
+}
