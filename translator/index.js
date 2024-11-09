@@ -4,8 +4,8 @@ dotenv.config();
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 import { ChatOpenAI } from "@langchain/openai";
-import { HumanMessage, SystemMessage } from "@langchain/core/messages";
 import { StringOutputParser } from "@langchain/core/output_parsers";
+import { ChatPromptTemplate } from "@langchain/core/prompts";
 
 const allowedLanguages = ["French", "Italian", "German", "Spanish"];
 
@@ -24,19 +24,22 @@ const argv = yargs(hideBin(process.argv)).option("language", {
 })
 .argv;
 
-const modelName = "gpt-4o-mini";
+const {english, language} = argv;
+
+const systemTemplate = "Translate the following from English into {language}:";
+
+const promptTemplate = ChatPromptTemplate.fromMessages([
+    ["system", systemTemplate],
+    ["user", "{text}"]
+]);
+
+const modelName = process.env.MODEL_NAME || "gpt-4o-mini";
 const model = new ChatOpenAI({ model: modelName });
 
-const {english} = argv;
-const targetLanguage = argv.language;
-
-const messages = [
-    new SystemMessage(`Translate the following from English into ${targetLanguage}`),
-    new HumanMessage(english),
-];
-
-const messageChunk = await model.invoke(messages);
-
 const parser = new StringOutputParser();
-const stringResult = await parser.invoke(messageChunk);
+
+const chain = promptTemplate.pipe(model).pipe(parser);
+
+const stringResult = await chain.invoke({language, text: english});
+
 console.log(stringResult);
