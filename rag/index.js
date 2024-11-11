@@ -64,7 +64,7 @@ console.log("PROMPT:");
 console.log(ragPrompt.template);
 console.log("=======================");
 
-const question = "What is task decomposition?";
+const question = "What are the key components in an autonomous agent system?";
 console.log("QUESTION:");
 console.log(question);
 console.log("=======================");
